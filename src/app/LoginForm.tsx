@@ -16,9 +16,9 @@ export default function LoginForm(){
               </form>
               <p className="text-gray-400 flex items-center h-[42px]">or login with</p>
               <div className="flex flex-row gap-3 ">
-                <button className="rounded-full border-gray-200 border-2"><Image src="/apple.svg" alt="applelogo" width={40} height={40} /></button>
-                <button className="rounded-full border-gray-200 border-2"><Image src="/google.svg" alt="googlelogo" width={40} height={40} /></button>
-                <button className="rounded-full border-gray-200 border-2 "> <Image src="/fb.svg" alt="Facebooklogo" width={40} height={30}  /></button>
+                <button className="rounded-full border-gray-200 border-2"><Image src="/apple.svg" alt="applelogo" width={42} height={42} /></button>
+                <button className="rounded-full border-gray-200 border-2"><Image src="/google.svg" alt="googlelogo" width={42} height={42} /></button>
+                <button className="rounded-full border-gray-200 border-2 "> <Image src="/fb.svg" alt="Facebooklogo" width={42} height={42}  /></button>
               </div>
               <p className="mt-4 mb-4">Don't have an account?{" "}
                  <a href="#" className="underline">Sign up</a> </p>
