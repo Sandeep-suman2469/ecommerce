@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -44,23 +45,22 @@ export default function HomePage() {
               <p className=" flex justify-end text-right text-black text-[51.41px] mt-8 ml-45">Most sexy & fabulous design </p>
             </div>
         </div>
-        <div className="flex flex-row mx-34 mt-8 rounded-4xl gap-x-8">
+        <div className="flex flex-row mix-h-[663.04px] mx-34 mt-8 rounded-4xl gap-x-8">
             <div className="flex flex-row rounded-4xl bg-[rgb(248,248,250)]">
                 <Image className=" rounded-4xl bg-[rgb(248,248,250)] " src="/image 3.svg" alt="googlelogo" width={384.62} height={387.73} />
-                <div className="flex flex-col font-normal items-center justify-center">
-                <p className="flex text-left  text-gray-600 text-[44.43px]">T-Shirt</p>
-                <p className=" flex  text-[51.41px] text-black ">The Office Life</p>
+                <div className="flex flex-col font-normal text-left items-center justify-center">
+                <p className="flex  text-gray-600 text-[44.43px]">T-Shirt</p>
+                <p className=" flex px-10 text-[51.41px] text-black ">The Office Life</p>
                 </div>
             </div>
             <div className="flex flex-row rounded-4xl bg-[rgb(248,248,250)]">
                 <div className="flex flex-col font-normal items-center justify-center">
                 <p className="flex  text-gray-600  text-[44.43px] mt-6">Dresses</p>
-                <p className=" flex  text-[51.41px] text-black ">Elegant Design </p>
+                <p className=" flex  text-[51.41px] text-black px-18 ">Elegant Design </p>
                 </div>
                 <Image className=" rounded-4xl bg-[rgb(248,248,250)] " src="/image 4.svg" alt="googlelogo" width={384.62} height={387.73} />
             </div>
-        </div>
-        
+        </div>     
       </div>  
     </div>
   );
