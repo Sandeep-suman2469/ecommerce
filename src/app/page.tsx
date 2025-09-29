@@ -5,6 +5,7 @@ import CreatePassword from "./CreatePassword";
 import ForgotPassword from "./ForgotPassword";
 import ChangedPassword from "./ChangedPassword";
 import Header from "./Header";
+import HomePage from "./HomePage";
 
 export default function Home() {
   return (
@@ -36,6 +37,7 @@ export default function Home() {
    {/* <ForgotPassword /> */}
    {/* <ChangedPassword /> */}
     <Header />
+    <HomePage />
    </>
 
   );
