@@ -27,7 +27,7 @@ export default function Header(){
                 <button onClick={toggleSearchBar}><Image  src="/searchIcon.svg" alt="search_bar" width={25} height={25.21} /></button>
                 {showSearchBar && (
                     <input type="text" placeholder="Search..." 
-                    className="" />
+                    className="" /> 
                 )}
                 <Image  src="/whislist.svg" alt="wishlist" width={33} height={31} />
                 <Image  src="/shop.svg" alt="cart" width={26} height={29.25} />
