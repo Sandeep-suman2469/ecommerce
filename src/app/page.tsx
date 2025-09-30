@@ -8,6 +8,7 @@ import Header from "./Header";
 import HomePage from "./HomePage";
 import Footer from "./footer";
 import About from "./about";
+import ProfileLayout from "./profile/layout";
 
 export default function Home() {
   return (
@@ -38,10 +39,11 @@ export default function Home() {
    {/* <CreatePassword /> */}
    {/* <ForgotPassword /> */}
    {/* <ChangedPassword /> */}
-    <Header />
-    <About />
+    {/* <Header /> */}
+    {/* <About /> */}
     {/* <HomePage /> */}
-    <Footer/>
+    {/* <Footer/> */}
+    <ProfileLayout />
    </>
 
   );
