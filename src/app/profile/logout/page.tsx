@@ -1,6 +1,6 @@
 
 
-export default function RatePage() {
+export default function LogoutPage() {
   return (
      <div className="pl-[38px] pt-[24px] ">
       <h1 className="font-semibold text-[24px] text-[rgba(66,48,41,1)]">Log Out</h1>

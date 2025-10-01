@@ -9,6 +9,7 @@ import HomePage from "./HomePage";
 import Footer from "./footer";
 import About from "./about";
 import ProfileLayout from "./profile/layout";
+import SettingLayout from "./settings/layout";
 
 export default function Home() {
   return (
@@ -44,6 +45,7 @@ export default function Home() {
     {/* <HomePage /> */}
     {/* <Footer/> */}
     <ProfileLayout />
+    {/* < SettingLayout /> */}
    </>
 
   );
