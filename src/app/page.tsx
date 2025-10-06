@@ -10,6 +10,9 @@ import Footer from "./footer";
 import About from "./about";
 import ProfileLayout from "./profile/layout";
 import SettingLayout from "./settings/layout";
+import MenProductsPage from "./men's/page";
+import WomenProductsPage from "./women's/page";
+import FilterPage from "./filter/page";
 
 export default function Home() {
   return (
@@ -44,8 +47,11 @@ export default function Home() {
     {/* <About /> */}
     {/* <HomePage /> */}
     {/* <Footer/> */}
-    <ProfileLayout />
+    {/* <ProfileLayout /> */}
     {/* < SettingLayout /> */}
+    {/* <MenProductsPage /> */}
+    {/* <WomenProductsPage /> */}
+    <FilterPage />
    </>
 
   );
