@@ -13,6 +13,8 @@ import SettingLayout from "./settings/layout";
 import MenProductsPage from "./men's/page";
 import WomenProductsPage from "./women's/page";
 import FilterPage from "./filter/page";
+import FullProductPage from "./fullProduct/page";
+import CartItems from "./CartItems/page";
 
 export default function Home() {
   return (
@@ -51,7 +53,9 @@ export default function Home() {
     {/* < SettingLayout /> */}
     {/* <MenProductsPage /> */}
     {/* <WomenProductsPage /> */}
-    <FilterPage />
+    {/* <FilterPage /> */}
+    {/* <FullProductPage/> */}
+    <CartItems/>
    </>
 
   );
