@@ -15,6 +15,7 @@ import WomenProductsPage from "./women's/page";
 import FilterPage from "./filter/page";
 import FullProductPage from "./fullProduct/page";
 import CartItems from "./CartItems/page";
+import CheckOut1 from "./checkout1/page";
 
 export default function Home() {
   return (
@@ -55,7 +56,8 @@ export default function Home() {
     {/* <WomenProductsPage /> */}
     {/* <FilterPage /> */}
     {/* <FullProductPage/> */}
-    <CartItems/>
+    {/* <CartItems/> */}
+    <CheckOut1 />
    </>
 
   );
