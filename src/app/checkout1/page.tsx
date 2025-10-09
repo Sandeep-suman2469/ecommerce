@@ -30,7 +30,7 @@ export default function CheckOut1(){
 
             <div className="flex gap-[37.8px] pl-[151px] pt-[106px] items-center justify-start text-center ">
                 <Image  src="/backarrow.svg" alt="profile" width={52.73} height={52.73} />
-                <p className="text-[55.6px]">Your Cart</p>
+                <p className="text-[55.6px] font-bold ">Check out</p>
             </div>
                 
             <div className="bg-white rounded-[24.42px] mt-[48px] mx-[151px] pb-[90.07px] shadow-lg ">
