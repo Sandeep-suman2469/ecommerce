@@ -16,6 +16,9 @@ import FilterPage from "./filter/page";
 import FullProductPage from "./fullProduct/page";
 import CartItems from "./CartItems/page";
 import CheckOut1 from "./checkout1/page";
+import CheckOut2 from "./checkout2/page";
+import CheckOut3 from "./checkout3/page";
+import Orders from "./orders/page";
 
 export default function Home() {
   return (
@@ -57,7 +60,10 @@ export default function Home() {
     {/* <FilterPage /> */}
     {/* <FullProductPage/> */}
     {/* <CartItems/> */}
-    <CheckOut1 />
+    {/* <CheckOut1 /> */}
+    {/* <CheckOut2 /> */}
+    {/* <CheckOut3 /> */}
+    <Orders />
    </>
 
   );
