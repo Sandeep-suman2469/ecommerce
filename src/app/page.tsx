@@ -19,6 +19,8 @@ import CheckOut1 from "./checkout1/page";
 import CheckOut2 from "./checkout2/page";
 import CheckOut3 from "./checkout3/page";
 import Orders from "./orders/page";
+import OrderDetails from "./orderdetail/page";
+import OrderInfo from "./orderInfo/page";
 
 export default function Home() {
   return (
@@ -63,7 +65,9 @@ export default function Home() {
     {/* <CheckOut1 /> */}
     {/* <CheckOut2 /> */}
     {/* <CheckOut3 /> */}
-    <Orders />
+    {/* <Orders /> */}
+    <OrderDetails />
+    {/* <OrderInfo/> */}
    </>
 
   );
