@@ -7,7 +7,7 @@ import Footer from "../footer";
 
 export default function Orders(){
 
-    const [filter , setFiler] = useState();
+    const [filter , setFilter] = useState("");
     
     const ordersData = [
   {
@@ -43,26 +43,47 @@ export default function Orders(){
     status: "cancelled",
   },
 ];
+
+    
+    const filteredOrders =
+      filter === "" ? ordersData : ordersData.filter((o) => o.status.toLowerCase() === filter.toLowerCase());
+
+
     return(
-        <>
+        
            <>
                  <Header />
-                 <div className="bg-[rgb(247,247,247)] text-black  shadow-inner shadow-gray-500/40 pb-[269px]">
+                 <div className="bg-[rgb(247,247,247)] text-black  shadow-inner shadow-gray-500/40 pb-[193px]">
          
+                    
                      <div className="flex gap-[37.8px] ml-[94px] pt-[50px] items-center justify-start text-center ">
                          <Image  src="/backarrow.svg" alt="profile" width={52.73} height={52.73} />
                          <p className="text-[55.6px] font-bold ">My Orders </p>
                      </div>
 
-                     <div className="flex font-normal text-[32.5px] ml-[94px] gap-[41.79px]">
+                     {/* <div className="flex font-normal text-[32.5px] ml-[94px] gap-[41.79px]">
                          <button className="bg-white py-[8.69px] px-[38.79px] rounded-[17px] ">Pending</button>
                          <button className="bg-white py-[8.71px] px-[27.86px] rounded-[17px]">Delivered</button>
                          <button className="bg-white py-[8.71px] px-[20.89px] rounded-[17px] ">Cancelled</button>
 
-                     </div>
+                     </div> */}
+
+                        <div className="flex font-normal text-[32.5px] mt-[30px] ml-[94px] gap-[41.79px]">
+                          {["Pending", "Delivered", "Cancelled"].map((btn) => (
+                            <button
+                              key={btn}
+                              onClick={() => setFilter(btn === filter ? "" : btn)}
+                              className={`py-[8.69px] px-[38.79px] rounded-[17px] ${
+                                filter === btn ? "bg-[rgba(68,48,41,1)] text-white" : "bg-white text-black"
+                              }`}
+                            >
+                              {btn}
+                            </button>
+                          ))}
+                        </div>
                          
                      <div className=" rounded-[24.42px] mt-[48px] pb-[90.07px] ">      
-                         {ordersData.map((order) =>(
+                         {filteredOrders.map((order) =>(
                             <div key={order.id}
                              className="flex flex-col pl-[37px]  pr-[57.7px] pt-[35px] pb-[34.21px]  bg-white mb-[48px] mx-[94px] rounded-[17px] shadow-lg">
                                  <div className="flex justify-between ">
@@ -99,9 +120,11 @@ export default function Orders(){
          
                  <Footer />
                  </>
-        </>
+        
     );
 }
+
+
 
 
 
