@@ -40,27 +40,28 @@ export default function SignUpForm(){
 
 
     return(
-        <div className="bg-gray-100  w-full h-screen border-2  flex items-center justify-center">
-           <div className=" flex flex-col  bg-white items-center justify-center text-center text-black rounded-[17px] w-[651px] ">
-              <h1 className="font-['Rage'] text-[71.37px] mb-4">TrendTheByte</h1>
-              <h1 className="w-full font-bold text-[40.7px] mb-4 ">Create your account</h1>
-              <form className="flex flex-col w-[419.69px] px-5" onSubmit={handleSignup}>
+        <div className="bg-white md:bg-gray-100 min-h-screen  w-full pt-[44px] pb-[30px] flex  items-center justify-center">
+           <div className=" flex flex-col max-w-[651px] w-full bg-white items-center justify-center text-center text-black rounded-[17px]  md:shadow-lg ">
+               <h1 className="font-['Rage'] hidden md:block text-[71.37px] mx-[149px] mt-[54px] mb-[25px]">TrendTheByte</h1>
+              <h1 className="font-bold text-[24px] text-left md:text-center md:text-[40.7px] mx-[33px] md:mx-[108px] ">Create your account</h1>
+              <form className="flex flex-col w-full px-[33px] md:px-[142px] gap-[27.08px] mt-[19px] " onSubmit={handleSignup}>
                 <input value={userInfo.name} type="text" placeholder="Enter your name" required onChange={handleChange} className="border-b-2 border-gray-400 py-2 placeholder:text-black mb-4 focus:outline-none"/>
                 <input value={userInfo.email} type="email" placeholder="Email address" required onChange={handleChange} className="border-b-2 border-gray-400 py-2 placeholder:text-black mb-4 focus:outline-none"/>
                 <input value={userInfo.password } type="password" placeholder="Password" required onChange={handleChange} className="border-b-2 border-gray-400  placeholder:text-black py-2  mb-4 focus:outline-none "/>
-                <input value={userInfo.password} type="password" placeholder="Confirm password" required onChange={handleChange}className="border-b-2 border-gray-400  placeholder:text-black py-2 mb-4 focus:outline-none"/>
-                <button value={userInfo.cnf_password} className="text-white bg-[rgb(45,32,28)] w-[147px] mx-auto py-2 rounded-4xl flex items-center justify-center mt-8 mb-6 ">SIGN UP</button>
+                <input value={userInfo.cnf_password} type="password" placeholder="Confirm password" required onChange={handleChange}className="border-b-2 border-gray-400  placeholder:text-black py-2 mb-4 focus:outline-none"/>
+                <button  className="text-white bg-[rgb(45,32,28)] w-[147px] mx-auto py-2 rounded-4xl flex items-center justify-center mt-[34pxpx] mb-[28px] ">SIGN UP</button>
               </form>
-              <p className="text-gray-400 flex items-center h-[42px]">or signup with</p>
-              <div className="flex flex-row gap-3 ">
-                <button className="rounded-full border-gray-200 border-2"><Image src="/apple.svg" alt="applelogo" width={40} height={40} /></button>
-                <button className="rounded-full border-gray-200 border-2"><Image src="/google.svg" alt="googlelogo" width={40} height={40} /></button>
-                <button className="rounded-full border-gray-200 border-2 "> <Image src="/fb.svg" alt="Facebooklogo" width={40} height={30}  /></button>
+              <p className="text-gray-400 flex items-center mb-[28px] ">or signup with</p>
+              <div className="flex flex-row gap-[20px] ">
+                <button className="rounded-full border-gray-200"><Image src="/apple.svg" alt="applelogo" width={42} height={42} /></button>
+                <button className="rounded-full border-gray-200 "><Image src="/google.svg" alt="googlelogo" width={42} height={42} /></button>
+                <button className="rounded-full border-gray-200 border-1 "> <Image className="mx-[10px] my-[10px]" src="/fb.svg" alt="Facebooklogo" width={22} height={22}  /></button>
               </div>
               <p className="mt-4 mb-4">Already have an account?{" "}
-                 <a href="#" className="underline">login</a> </p>
+                 <a href="#" className="underline">login</a> </p> 
            </div>
         </div>
         
     );
+
 }

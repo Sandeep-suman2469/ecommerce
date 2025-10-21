@@ -1,29 +1,70 @@
+"use client"
+
 import Image from "next/image";
+import { useState } from "react";
+import toast from 'react-hot-toast'
 
 export default function LoginForm(){
 
+  const [userInfo, setUserInfo] = useState({
+     
+      email: '',
+      password: '',
+      
+    })
+  
+
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault()
+      const { email, password } = userInfo
+      if (password.length < 8) return
+      toast.success('Sign-up successful. ');
+     
+    } catch (error: any) {
+      if (error.data.detail) {
+        toast.error(error.data.detail);
+      }
+      else {
+        toast.error('Something went wrong.');
+      }
+
+      console.log('login failed:', error);
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setUserInfo({
+      ...userInfo,
+      [name]: value
+    })
+  }
+
+
     return(
-        <div className="bg-gray-100  w-full h-screen border-2  flex items-center justify-center">
-           <div className=" flex flex-col  bg-white items-center justify-center text-center text-black rounded-[17px] w-[651px] ">
-              <h1 className="font-['Rage'] text-[71.37px] mb-6">TrendTheByte</h1>
-              <h1 className="w-full font-bold text-[40.7px] mb-6 ">Log into your account</h1>
-              <form className="flex flex-col w-[419.69px] px-5 ">
-                
-                <input type="email" placeholder="Email address" className="border-b-2 border-gray-400 py-2 placeholder:text-black mb-4 focus:outline-none"/>
-                <input type="password" placeholder="Password" className="border-b-2 border-gray-400  placeholder:text-black py-2  mb-4 focus:outline-none "/>
-                 <a href="#" className="flex justify-end">Forgot Password ?</a> 
-                <button className="text-white bg-[rgb(45,32,28)] w-[147px] mx-auto py-2 rounded-4xl flex items-center justify-center mt-8 mb-6 ">LOGIN</button>
-              </form>
-              <p className="text-gray-400 flex items-center h-[42px]">or login with</p>
-              <div className="flex flex-row gap-3 ">
-                <button className="rounded-full border-gray-200 border-2"><Image src="/apple.svg" alt="applelogo" width={42} height={42} /></button>
-                <button className="rounded-full border-gray-200 border-2"><Image src="/google.svg" alt="googlelogo" width={42} height={42} /></button>
-                <button className="rounded-full border-gray-200 border-2 "> <Image src="/fb.svg" alt="Facebooklogo" width={42} height={42}  /></button>
-              </div>
-              <p className="mt-4 mb-4">Don't have an account?{" "}
-                 <a href="#" className="underline">Sign up</a> </p>
-           </div>
-        </div>
+          <div className="bg-white md:bg-[rgb(247,247,247)] min-h-screen  w-full pt-[44px] pb-[30px] flex  items-center justify-center">
+                   <div className=" flex flex-col max-w-[651px] w-full bg-white items-center justify-center text-center text-black rounded-[17px]  md:shadow-lg sm:shadow-lg ">
+                       <h1 className="font-['Rage'] hidden sm:block md:block text-[71.37px] mx-[149px] mt-[54px] mb-[25px]">TrendTheByte</h1>
+                      <h1 className="font-bold text-[24px] text-left md:text-center md:text-[40.7px] sm:text-[40px] mx-[33px] md:mx-[108px] ">Log into your account</h1>
+                      <form className="flex flex-col w-full px-[33px] md:px-[116px] sm:px-[116px] gap-[27.08px] mt-[19px] " onSubmit={handleLogin}>
+                        
+                        <input value={userInfo.email} type="email" placeholder="Email address" required onChange={handleChange} className="border-b-2 border-gray-400 py-2 placeholder:text-black mb-4 focus:outline-none"/>
+                        <input value={userInfo.password } type="password" placeholder="Password" required onChange={handleChange} className="border-b-2 border-gray-400  placeholder:text-black py-2  mb-4 focus:outline-none "/>
+                        <a href="#" className="flex justify-end">Forgot Password ?</a> 
+                        <button  className="text-white bg-[rgb(45,32,28)] w-[147px] mx-auto py-2 rounded-4xl flex items-center justify-center mt-[34px] mb-[28px] ">LOGIN</button>
+                      </form>
+                      <p className="text-gray-400 flex items-center mb-[28px] ">or signup with</p>
+                      <div className="flex flex-row gap-[20px] ">
+                        <button className="rounded-full border-gray-200"><Image src="/apple.svg" alt="applelogo" width={42} height={42} /></button>
+                        <button className="rounded-full border-gray-200 "><Image src="/google.svg" alt="googlelogo" width={42} height={42} /></button>
+                        <button className="rounded-full border-gray-200 border-1 "> <Image className="mx-[10px] my-[10px]" src="/fb.svg" alt="Facebooklogo" width={22} height={22}  /></button>
+                      </div>
+                      <p className=" mt-[109px] md:mt-4 mb-4">Already have an account?{" "}
+                         <a href="#" className="underline">login</a> </p> 
+                   </div>
+                </div>
         
     );
 }
