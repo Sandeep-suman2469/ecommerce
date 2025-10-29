@@ -28,14 +28,14 @@ export default function CartItems(){
             
             { cartItems.map((items)=>(
                 <div key={items.id} className="flex items-center justify-between bg-white gap-[49.38px]  rounded-[75.29px] p-6  w-full  shadow-sm ">
-                      <div className="">
-                            <Image src={items.image}  alt="Sportwear Set" width={368.35} height={372.69} className="rounded-xl object-cover" />
+                      <div className="md:h-[372.69] md:w-[368.35]">
+                            <Image src={items.image}  alt="Sportwear Set" width={97.85} height={99} className="rounded-xl object-cover" />
                         </div>
 
                         <div className="flex flex-col justify-between">
-                            <h2 className="font-bold text-[48.94px] text-black mb-[48.94px] ">{items.name}</h2>
-                            <p className="text-[60.23px] font-bold text-black ">${items.price.toFixed(2)}</p>
-                            <p className="text-gray-500 text-[37.65px]">
+                            <h2 className="font-bold md:text-[48.94px] text-[13px] text-black mb-[48.94px] ">{items.name}</h2>
+                            <p className="md:text-[60.23px] text-[13px]  font-bold text-black ">${items.price.toFixed(2)}</p>
+                            <p className="text-gray-500 text-[10px] md:text-[37.65px]">
                                 Size: <span className="font-medium text-gray-600">{items.size}</span> |
                                 Color: <span className="font-medium text-gray-600">{items.color}</span>
                             </p>
@@ -43,7 +43,7 @@ export default function CartItems(){
 
                         <div className="flex flex-col items-end gap-[109.17px] mr-[61.97px] ">
                 
-                            <input type="checkbox" className=" w-[68.85px] h-[75.29px] accent-[rgba(80,138,123,1)] bg-[rgb(247,247,247)] rounded-[15.06px]  " />
+                            <input type="checkbox" className="w-[18.29px] h-[20px] md:w-[68.85px] md:h-[75.29px] accent-[rgba(80,138,123,1)] bg-[rgb(247,247,247)] rounded-[15.06px]  " />
 
                             
                     
@@ -99,5 +99,4 @@ export default function CartItems(){
         </>
     );
 }
-
 
