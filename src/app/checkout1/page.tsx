@@ -26,22 +26,22 @@ export default function CheckOut1(){
 
         <>
         <Header />
-        <div className="bg-[rgb(247,247,247)] text-black  shadow-inner shadow-gray-500/40 pb-[362px]">
+        <div className="sm:bg-[rgb(247,247,247)] bg-white w-full text-black items-center justify-center  shadow-inner shadow-gray-500/40 pb-[362px]">
 
-            <div className="flex gap-[37.8px] pl-[151px] pt-[106px] items-center justify-start text-center ">
+            {/* <div className="flex gap-[37.8px] pl-[151px] pt-[106px] items-center justify-start text-center ">
                 <Image  src="/backarrow.svg" alt="profile" width={52.73} height={52.73} />
                 <p className="text-[55.6px] font-bold ">Check out</p>
-            </div>
+            </div> */}
                 
-            <div className="bg-white rounded-[24.42px] mt-[48px] mx-[151px] pb-[90.07px] shadow-lg ">
-                   <Image className="mx-[176px] pt-[71px] "
+            <div className="bg-white rounded-[24.42px] mt-[48px] mx-[151px] pb-[90.07px] sm:shadow-lg ">
+                   <Image className=" xl:mx-[176px] pt-[71px]  w-full max-w-[785px] h-auto "
                           src="/checkout1.svg" alt="checkout1" width={785} height={64.92} />
 
                     <div className="flex flex-col px-[68px] mt-[60.08px] ">
                     <p className="text-[21.02px] font-normal">STEP 1</p>
                     <h1 className="text-[47.78px] font-bold">Shipping</h1>
 
-                    <form className="grid grid-cols-1 md:grid-cols-2 mt-[63px] gap-[120px] px-[13px] ">
+                    <form className="grid grid-cols-1 sm:grid-cols-2 mt-[63px] gap-[120px] px-[13px] ">
                         <div className="relative">
                                 <input
                                     type="text"

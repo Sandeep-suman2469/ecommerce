@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "../Header";
+import Footer from "../footer";
 
 export default function HomePage() {
   return (
+    <>
+    <Header />
     <div className="w-full bg-white shadow-inner shadow-gray-500/30 p-4">
       <div className="mx-4">
         <div className="flex flex-row justify-evenly text-center ">
@@ -63,5 +67,7 @@ export default function HomePage() {
         </div>     
       </div>  
     </div>
+    <Footer />
+    </>
   );
 }
