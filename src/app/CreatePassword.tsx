@@ -19,7 +19,7 @@ export default function CreatePassword() {
       
         <div className="flex items-center md:gap-[70.94px] sm:gap-[50px] mx-[35px] sm:pl-[58px] sm:pr-[54px] pt-1 sm:pt-[62px]">
          
-             <Image className="h-[36px] sm:h-[55.2px] sm:w-[55.2px] w-[36px] "  src="/backarrow.svg" alt="back_btn" width={55.2} height={55.2} />
+             <Image className="h-9 sm:h-[55.2px] sm:w-[55.2px] w-[36px] "  src="/backarrow.svg" alt="back_btn" width={55.2} height={55.2} />
           
              <h1 className="font-['Rage'] text-black font-normal hidden sm:block sm:text-[62px]  md:text-[71.37px]">TrendTheByte</h1>
         </div>

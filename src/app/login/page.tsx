@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from 'react-hot-toast'
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "../store/authStore";
 import Link from "next/link";
 
 export default function LoginForm(){
   
   const router = useRouter();
-
+  const { login, loading, error, user } = useAuthStore();
   const [userInfo, setUserInfo] = useState({
      
       email: '',
@@ -20,38 +21,21 @@ export default function LoginForm(){
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      if (userInfo.password.length < 8) {
+        toast.error("Password must be at least 8 characters.");
+        return;
+  }
 
-      try {
-        const { email, password } = userInfo;
+  const result = await login(userInfo.email, userInfo.password);
 
-        if (password.length < 8) {
-          toast.error("Password must be at least 8 characters.");
-          return;
-        }
+ if (!result.success) {
+  toast.error(result.message || "Something went wrong");
+  return;
+}
 
-        const response = await fetch("http://localhost:8000/api/auth/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          toast.error(data.detail || "Invalid credentials");
-          return;
-        }
-
-        toast.success("Login successful!");
-        router.push("/homepage")
-        console.log("User:", data);
-
-      } catch (error) {
-        console.error("Login failed:", error);
-        toast.error("Something went wrong while logging in.");
-      }
+  toast.success("Login successful!");
+  router.push("/homepage");
+     
     };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +56,6 @@ export default function LoginForm(){
                         
                         <input name="email" value={userInfo.email} type="email" placeholder="Email address" required onChange={handleChange} className="border-b-2 border-gray-400 py-2 placeholder:text-black mb-4 focus:outline-none"/>
                         <input name="password" value={userInfo.password } type="password" placeholder="Password" required onChange={handleChange} className="border-b-2 border-gray-400  placeholder:text-black py-2  mb-4 focus:outline-none "/>
-                        {/* <a href="#" className="flex justify-end">Forgot Password ?</a>  */}
                          <Link href="/forgotpassword" className="flex justify-end hover:underline">
                                Forgot Password ?
                          </Link>
