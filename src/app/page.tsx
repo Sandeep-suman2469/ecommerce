@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import SignUpForm from "./signup/page";
 import LoginForm from "./login/page";
-import CreatePassword from "./CreatePassword";
+import CreatePassword from "./createpassword/page"
 import ForgotPassword from "./ForgotPassword";
-import ChangedPassword from "./ChangedPassword";
+import ChangedPassword from "./changedpassword/page";
 import Header from "./Header";
 import HomePage from "./homepage/page"
 import Footer from "./footer";

@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { setCookie, getCookie, removeCookie } from "react-use-cookie";
+
 
 interface User {
   email: string;
@@ -10,9 +12,10 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 
-  signup: (fullName: string, email: string, password: string, confirmPassword: string ) => Promise<void>;
+  signup: (fullName: string, email: string, password: string, confirmPassword: string ) => Promise<{ success: boolean; message?: string }>;
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<{ success: boolean; message?: string }>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -46,9 +49,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (!res.ok) throw new Error(data.detail || "Signup failed");
 
     set({ user: { email }, loading: false });
+    return { success: true };
     console.log("Signup successful:", data);
   } catch (err: any) {
     set({ error: err.message, loading: false });
+    return { success: false, message: err.message}
   }
 },
 
@@ -70,7 +75,7 @@ login: async (email, password) => {
     }
 
     const token = data.access_token; 
-    localStorage.setItem("token", token);
+    setCookie("token", token, { days: 7 });
     set({ user: { email, token }, loading: false });
 
     return { success: true };
@@ -79,10 +84,50 @@ login: async (email, password) => {
     return { success: false, message: err.message };
   }
 },
+  
+ changePassword: async (oldPassword: string, newPassword: string) => {
+  set({ loading: true, error: null });
+
+  try {
+    const token = getCookie("token");
+    if (!token) {
+      throw new Error("You must be logged in to change password");
+    }
+
+    const res = await fetch("http://localhost:8000/api/users/change-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, 
+      },
+      body: JSON.stringify({
+        old_password: oldPassword,  
+        new_password: newPassword,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      const message = data.detail || "Password change failed";
+      set({ error: message, loading: false });
+      return { success: false, message };
+    }
+
+    set({ loading: false });
+    console.log("Password changed successfully:", data);
+    return { success: true };
+    
+  } catch (err: any) {
+    set({ error: err.message, loading: false });
+    return { success: false, message: err.message };
+  }
+},
+
 
 
   logout: () => {
-    localStorage.removeItem("token");
+    removeCookie("token");
     set({ user: null });
   },
 }));

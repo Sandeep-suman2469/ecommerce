@@ -28,16 +28,24 @@ export default function SignUpForm(){
     }
 
     try {
-      await signup(name, email, password, cnf_password);
+    //   await signup(name, email, password, cnf_password);
  
-      if (error) {
-        toast.error(error);
-        return;
-      }
+    //   if (error) {
+    //     toast.error(error);
+    //     return;
+    //   }
 
-      toast.success("Signup successful!");
-      console.log(userInfo);
-      router.push("/login"); 
+    //   toast.success("Signup successful!");
+    //   console.log(userInfo);
+    //   router.push("/login"); 
+
+    const result = await signup(name, email, password, cnf_password);
+    if (!result.success) {
+    toast.error(result.message || "Signup failed");
+    return;
+    }
+toast.success("Signup successful!");
+router.push("/login");
     } catch (err: any) {
       console.error("Signup failed:", err);
       toast.error(err.message || "Something went wrong.");
