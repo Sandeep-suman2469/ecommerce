@@ -24,6 +24,7 @@ import OrderDetails from "./orderdetail/page";
 import OrderInfo from "./orderInfo/page";
 import ReviewPage from "./review/page";
 import TrackOrder from "./trackorder/page";
+import Verify from "./verify/page";
 
 export default function Home() {
   return (
@@ -85,7 +86,7 @@ export default function Home() {
   //  {/* <LoginForm /> */}
 
   //  {/* <CreatePassword /> */}
-
+  //   {/* < Verify /> */}
   //  {/* <ForgotPassword /> */}
   //  {/* <ChangedPassword /> */}
   //   {/* <Header /> */}

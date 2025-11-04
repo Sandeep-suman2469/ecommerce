@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from 'react-hot-toast'
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/authStore";
@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function LoginForm(){
   
   const router = useRouter();
-  const { login, loading, error, user } = useAuthStore();
+  const { login, loading, error, user, checkAuth } = useAuthStore();
   const [userInfo, setUserInfo] = useState({
      
       email: '',
@@ -18,6 +18,15 @@ export default function LoginForm(){
       
     })
   
+    useEffect(() => {
+    checkAuth(); 
+  }, []);
+
+  useEffect(() => {
+    if (user?.token) {
+      router.replace("/homepage"); 
+    }
+  }, [user, router]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();

@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from 'react-hot-toast'
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/authStore";
@@ -10,13 +10,19 @@ export default function SignUpForm(){
 
   const router = useRouter();
 
-   const { signup, loading, error } = useAuthStore();
+   const { signup, loading, error, user } = useAuthStore();
    const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
     password: '',
     cnf_password:''
   })
+
+  useEffect(() => {
+    if (user) {
+      router.push("/homepage");
+    }
+  }, [user, router]);
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
@@ -28,24 +34,13 @@ export default function SignUpForm(){
     }
 
     try {
-    //   await signup(name, email, password, cnf_password);
- 
-    //   if (error) {
-    //     toast.error(error);
-    //     return;
-    //   }
-
-    //   toast.success("Signup successful!");
-    //   console.log(userInfo);
-    //   router.push("/login"); 
-
     const result = await signup(name, email, password, cnf_password);
     if (!result.success) {
     toast.error(result.message || "Signup failed");
     return;
     }
-toast.success("Signup successful!");
-router.push("/login");
+    toast.success("Signup successful!");
+    router.push("/login");
     } catch (err: any) {
       console.error("Signup failed:", err);
       toast.error(err.message || "Something went wrong.");
