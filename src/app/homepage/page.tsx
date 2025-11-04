@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "../Header";
 import Footer from "../footer";
+import ProtectedRoute from "../ProtectedRoute";
 
 export default function HomePage() {
   return (
-    <>
+    <ProtectedRoute>
     <Header />
     <div className="w-full bg-white shadow-inner shadow-gray-500/30 p-4">
       <div className="mx-4">
@@ -68,6 +69,6 @@ export default function HomePage() {
       </div>  
     </div>
     <Footer />
-    </>
+    </ProtectedRoute>
   );
 }

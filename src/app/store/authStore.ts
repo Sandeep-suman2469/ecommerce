@@ -16,6 +16,9 @@ interface AuthState {
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   changePassword: (oldPassword: string, newPassword: string) => Promise<{ success: boolean; message?: string }>;
+  forgotPassword: (email: string) => Promise<{ success: boolean; message?: string }>;
+  verifyEmail: (token: string) => Promise<{ success: boolean; message?: string }>;
+  checkAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -50,7 +53,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     set({ user: { email }, loading: false });
     return { success: true };
-    console.log("Signup successful:", data);
+    console.log("Signup successful:", data.data);
   } catch (err: any) {
     set({ error: err.message, loading: false });
     return { success: false, message: err.message}
@@ -67,6 +70,7 @@ login: async (email, password) => {
     });
 
     const data = await res.json();
+    console.log("Login response:", data);
 
     if (!res.ok) {
       const message = data.detail || "Invalid credentials";
@@ -74,7 +78,9 @@ login: async (email, password) => {
       return { success: false, message };
     }
 
-    const token = data.access_token; 
+    const token = data.data.access_token;
+    const user = data.data.user;
+ 
     setCookie("token", token, { days: 7 });
     set({ user: { email, token }, loading: false });
 
@@ -123,11 +129,67 @@ login: async (email, password) => {
     return { success: false, message: err.message };
   }
 },
+  forgotPassword: async (email: string) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
+      const data = await res.json();
+      console.log("Forgot Password response:", data);
 
+      if (!res.ok) {
+        const message = data.detail || data.message || "Failed to send reset email";
+        set({ error: message, loading: false });
+        return { success: false, message };
+      }
+
+      set({ loading: false });
+      return { success: true, message: data.message || "Password reset link sent" };
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      return { success: false, message: err.message };
+    }
+  },
+
+  verifyEmail: async (token) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch(`http://localhost:8000/api/auth/verify-email?token=${token}`, {
+        method: "GET",
+      });
+
+      const data = await res.json();
+      console.log("Verify Email response:", data);
+
+      if (!res.ok) {
+        const message = data.detail || "Email verification failed";
+        set({ error: message, loading: false });
+        return { success: false, message };
+      }
+
+      set({ loading: false });
+      return { success: true, message: data.message || "Email verified successfully" };
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      return { success: false, message: err.message };
+    }
+  },
 
   logout: () => {
     removeCookie("token");
     set({ user: null });
+  },
+
+  checkAuth: () => {
+    const token = getCookie("token");
+    if (token) {
+      set({ user: { email: "", token } });
+    } else {
+      set({ user: null });
+    }
   },
 }));
