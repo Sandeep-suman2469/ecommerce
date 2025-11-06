@@ -91,7 +91,7 @@ export default function Home() {
    {/* <ChangedPassword /> */}
     {/* <Header /> */}
     {/* <About /> */}
-    {/* <HomePage /> */}
+    <HomePage />
     {/* <Footer/> */}
     {/* <ProfileLayout /> */}
     {/* < SettingLayout /> */}
@@ -101,15 +101,17 @@ export default function Home() {
     {/* <FullProductPage/> */}
     {/* <CartItems/> */}
     {/* <CheckOut1 /> */}
+
     {/* <CheckOut2 /> */}
     {/* <CheckOut3 /> */}
     {/* <Orders /> */}
     {/* <OrderDetails /> */}
     {/* <OrderInfo/> */}
-    <ReviewPage />
+    {/* <ReviewPage /> */}
     {/* <TrackOrder /> */}
     
    </>
+
 
   );
 }
