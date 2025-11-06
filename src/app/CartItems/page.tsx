@@ -3,18 +3,78 @@ import Image from "next/image";
 import { useState } from "react";
 import Header from "../Header";
 import Footer from "../footer";
+import { useCartStore } from "../store/cartStore";
+
 
 export default function CartItems(){
 
-    const [quantity, setQuantity] = useState(1);
+    
+    // const cartItems = [
+    //     {id: 1, name: "Brown Dynamic", price: 39.99,  size: "L",  color: "white", image: "/image 6.svg"},
+    //     {id: 2, name: "Long Sleeve Dress", price: 45.00, size: "M", color: "brown", image: "/image 7.svg" },
+    //     {id: 3, name: "Bearly Awake Tee", price: 80.00, size: "XL", color: "black", image: "/image 8.svg"},
+        
+    // ]
 
-     const cartItems = [
-            {id: 1, name: "Brown Dynamic", price: 39.99,  size: "L",  color: "white", image: "/image 6.svg"},
-            {id: 2, name: "Long Sleeve Dress", price: 45.00, size: "M", color: "brown", image: "/image 7.svg" },
-            {id: 3, name: "Bearly Awake Tee", price: 80.00, size: "XL", color: "black", image: "/image 8.svg"},
-              
-        ]
 
+    const {
+    cartItems,
+    loading,
+    selectedItems,
+    fetchCart,
+    updateQuantity,
+    toggleSelect,
+    subtotal,
+  } = useCartStore();
+
+  // ✅ Fetch cart from backend when page loads
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
+  if (loading) {
+    return (
+      <div className="text-center text-gray-500 mt-20 text-2xl">
+        Loading cart...
+      </div>
+    );
+  }
+
+    
+
+    
+     
+  const [quantities, setQuantities] = useState<Record<number, number>>(
+  cartItems.reduce((acc, item) => ({ ...acc, [item.id]: 1 }), {})
+);
+
+
+
+  const [selectedItems, setSelectedItems] = useState<Record<number, boolean>>(
+    cartItems.reduce((acc, item) => ({ ...acc, [item.id]: false }), {})
+  );
+
+  const updateQuantity = (id: number, amount: number) => {
+    setQuantities((prev) => ({
+        ...prev,
+        [id]: Math.max(1, prev[id] + amount),
+        }));
+    };
+
+  const toggleSelect = (id: number) => {
+    setSelectedItems((prev) => ({
+        ...prev,
+        [id]: !prev[id],
+    }));
+    };
+
+  
+  const subtotal = cartItems.reduce(
+    (sum, item) =>
+        selectedItems[item.id] ? sum + item.price * quantities[item.id] : sum,
+    0
+    );
+    
     return(
         <>
         <Header/>
@@ -43,20 +103,23 @@ export default function CartItems(){
 
                         <div className="flex flex-col items-end gap-[109.17px] mr-[61.97px] ">
                 
-                            <input type="checkbox" className="w-[18.29px] h-[20px] md:w-[68.85px] md:h-[75.29px] accent-[rgba(80,138,123,1)] bg-[rgb(247,247,247)] rounded-[15.06px]  " />
+                            <input type="checkbox"
+                               checked={!!selectedItems[items.id]}
+                               onChange={() => toggleSelect(items.id)} 
+                                className="w-[18.29px] h-[20px] md:w-[68.85px] md:h-[75.29px] accent-[rgba(80,138,123,1)] bg-[rgb(247,247,247)] rounded-[15.06px]  " />
 
                             
                     
                             <div className="flex items-center justify-between border-[3.76px] border-gray-300 text-[45.17px] rounded-[75.29px] px-3 py-1 ">
                             <button
-                                onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                                onClick={() => updateQuantity(items.id, -1)}
                                 className="text-gray-600  text-[45.17px]"
                             >
                                 –
                             </button>
-                            <span className="text-gray-800 text-lg text-[45.17px] mx-[48.48px]">{quantity}</span>
+                            <span className="text-gray-800 text-lg text-[45.17px] mx-[48.48px]">{quantities[items.id]}</span>
                             <button
-                                onClick={() => setQuantity(quantity + 1)}
+                                onClick={() => updateQuantity(items.id, 1)}
                                 className="text-gray-600 text-[45.17px]"
                             >
                                 +
@@ -75,7 +138,7 @@ export default function CartItems(){
         <div className="bg-white rounded-t-[46.68px] ml-[130px] mr-[143px] pl-[71.58px] pr-[68.46px] pt-[43.57px] pb-[81px] shadow-sm ">
              <div  className="flex justify-between text-[43.57px]">
                 <span className="text-gray-400">Product price</span>
-                <span>$110</span>
+                <span>${subtotal.toFixed(2)}</span>
              </div>
 
              <div className="w-full h-[3.11px] bg-gray-400 mt-[74.69px] mb-[62.24px] "></div>
@@ -89,7 +152,7 @@ export default function CartItems(){
 
              <div  className="flex justify-between text-[43.57px]">
                 <span className="text-gray-400">Subtotal</span>
-                <span className="font-bold">$110</span>
+                <span className="font-bold">${subtotal.toFixed(2)}</span>
              </div>
 
              <button className="block mx-auto mt-[96.45px] rounded-[17px] bg-[rgba(66,48,41,1)] text-white text-[42.63px] px-[64.21px] py-[34.24px] font-bold ">Proceed to checkout</button>
@@ -99,4 +162,14 @@ export default function CartItems(){
         </>
     );
 }
+
+
+
+
+
+
+
+
+
+
 
