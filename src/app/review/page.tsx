@@ -4,10 +4,11 @@ import Link from "next/link";
 import Footer from "../footer";
 import Header from "../Header";
 import Image from "next/image";
-
+import { useSearchParams } from "next/navigation";
 import { FaStar } from "react-icons/fa";
-
+import toast from "react-hot-toast";
 import { useState } from "react";
+import { useReviewStore } from "../store/reviewStore";
 
 
 export default function ReviewPage(){
@@ -15,6 +16,28 @@ export default function ReviewPage(){
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [text, setText] = useState("");
+
+  const { submitReview, loading, error, success } = useReviewStore();
+
+  const searchParams = useSearchParams();
+  const product_id = Number(searchParams.get("product_id")) || 0;
+
+  const handleSubmit = async () => {
+    if (!rating || text.trim().length < 5) {
+      toast.error("Please add a rating and a meaningful comment!");
+      return;
+    }
+
+    await submitReview(rating, text, product_id);
+
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success("Review submitted successfully!");
+      setRating(0);
+      setText("");
+    }
+  };
 
 
     return(
@@ -25,7 +48,7 @@ export default function ReviewPage(){
             
                 <div className="flex gap-[37.8px] ml-[94px] pt-[47px] items-center justify-start text-center ">
                     <Image  src="/backarrow.svg" alt="profile" width={52.73} height={52.73} />
-                    <p className="text-[55.6px] font-bold "> Orders #1524 </p>
+                    <p className="text-[55.6px] font-bold "> Orders #1524 {product_id} </p>
                 </div>
 
                 <div className="flex justify-between text-center items-center text-white ml-[97px] mr-[91px] mt-[46px] pl-[78px] pr-[57px] pt-[47px] pb-[42px] rounded-[17px]  bg-[rgba(164,96,73,1)] ">
@@ -71,13 +94,17 @@ export default function ReviewPage(){
                     </div>
 
                     <span className="text-gray-400 text-[25.5px]  ">
-                    50 characters
+                          {text.length} characters
                     </span>
                 </div>
                 </div>
                    
                 <div className="flex mt-[54px] mr-[90.75px] justify-end">
-                      <button className="text-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[68.96px] py-[9.29px] bg-[rgba(66,48,41,1)] ">Submit Review</button>
+                      <button 
+                        disabled={loading}
+                        onClick={handleSubmit}
+                        className="text-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[68.96px] py-[9.29px] bg-[rgba(66,48,41,1)] ">
+                             {loading ? "Submitting..." : "Submit Review"}</button>
                 </div>
 
             </div>
@@ -86,3 +113,4 @@ export default function ReviewPage(){
             </>
     );
 }
+
