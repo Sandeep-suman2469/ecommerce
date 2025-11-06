@@ -80,8 +80,12 @@ export default function OrderDetails(){
                     ))}
 
                 <div className="flex gap-[42px] mt-[54px] mr-[90.75px] justify-end">
-                      <button className="bg-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[32px] py-[9.29px] ">Return Home</button>
-                      <button className="text-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[68.96px] py-[9.29px] bg-[rgba(66,48,41,1)] ">Rate</button>
+                      <Link href="/homePage">
+                        <button className="bg-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[32px] py-[9.29px] ">Return Home</button>
+                      </Link>
+                      <Link href="/review">
+                        <button className="text-white text-[32.5px] border-1 border-gray-300 rounded-[17px] px-[68.96px] py-[9.29px] bg-[rgba(66,48,41,1)] ">Rate</button>
+                      </Link>
                 </div>
 
             </div>
