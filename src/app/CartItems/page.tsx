@@ -17,15 +17,15 @@ export default function CartItems(){
     // ]
 
 
-    const {
-    cartItems,
-    loading,
-    selectedItems,
-    fetchCart,
-    updateQuantity,
-    toggleSelect,
-    subtotal,
-  } = useCartStore();
+//     const {
+//     cartItems,
+//     loading,
+//     selectedItems,
+//     fetchCart,
+//     updateQuantity,
+//     toggleSelect,
+//     subtotal,
+//   } = useCartStore();
 
   // ✅ Fetch cart from backend when page loads
   useEffect(() => {

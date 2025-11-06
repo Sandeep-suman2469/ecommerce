@@ -1,10 +1,25 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import Header from "../Header";
 import Footer from "../footer";
 import ProtectedRoute from "../ProtectedRoute";
+import { useEffect } from "react";
+import { useProductStore, Product } from "../store/productStore";
 
 export default function HomePage() {
+
+  const { products, loading, error, fetchProducts } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  // Filter products by category_id
+  const justLaunched = products.filter((p: Product) => p.category_id === 3);
+  const mensProducts = products.filter((p: Product) => p.category_id === 1);
+  const womensProducts = products.filter((p: Product) => p.category_id === 2);
+
   return (
     <ProtectedRoute>
     <Header />
@@ -21,18 +36,55 @@ export default function HomePage() {
             <Image src="/forwardArrow.svg" alt="forward_arrow" width={47} height={47} />
             </button>
         </div>
+
+         {loading && <p className="text-center text-gray-600 mt-6">Loading products...</p>}
+         {error && <p className="text-center text-red-500 mt-6">Error: {error}</p>}
+
+        <div className="my-4">
         <div className="flex flex-row justify-between mx-34 my-4">
             <h1 className="text-[41.6px] font-bold text-black">Just Launched !!!</h1>
             <button className="text-gray-600"> Show all</button>
         </div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
+              {justLaunched.map((item: Product) => (
+                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+                  <p className="text-xl font-semibold text-black">{item.name}</p>
+                  <p className="text-gray-600 text-lg">${item.price}</p>
+                </div>
+              ))}
+            </div>
+        </div>
+
+        <div className="my-4">
         <div className="flex flex-row justify-between mx-34 my-4">
             <h1 className="text-[41.6px] font-bold text-black">For men's</h1>
             <button className="text-gray-600"> Show all</button>
         </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
+              {justLaunched.map((item: Product) => (
+                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+                  <p className="text-xl font-semibold text-black">{item.name}</p>
+                  <p className="text-gray-600 text-lg">${item.price}</p>
+                </div>
+              ))}
+            </div>
+        </div>
+
+        <div className="my-4">
         <div className="flex flex-row justify-between mx-34 my-4">
             <h1 className="text-[41.6px] font-bold text-black">For Women's</h1>
             <button className="text-gray-600"> Show all</button>
         </div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
+              {justLaunched.map((item: Product) => (
+                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+                  <p className="text-xl font-semibold text-black">{item.name}</p>
+                  <p className="text-gray-600 text-lg">${item.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
         <div className="flex flex-row justify-start mx-34 my-4">
             <h1 className="text-[41.6px] font-bold text-black">Top Collections</h1>
         </div>
