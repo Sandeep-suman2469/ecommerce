@@ -1,9 +1,24 @@
-
+"use client"
 import Image from "next/image";
-import Header from "../Header";
+import Header from "@/app/Header";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useProductStore } from "@/app/store/productStore";
+import { useEffect } from "react";
 
 export default function FullProductPage(){
+
+    const { id } = useParams();
+    const { selectedProduct, productMedia, fetchProductById, loading, error } = useProductStore();
+
+
+    useEffect(() => {
+    if (id) fetchProductById(Number(id));
+  }, [id, fetchProductById]);
+
+  if (loading) return <p className="text-center mt-10 text-gray-600">Loading...</p>;
+  if (error) return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
+  if (!selectedProduct) return <p className="text-center mt-10 text-gray-600">Product not found.</p>;
 
     const Similar_products = [
     {id: 1, name: "Brown Dynamic", price: 39.99,   image: "/image 6.svg"},
@@ -23,10 +38,18 @@ export default function FullProductPage(){
             </div>
 
             <div className="flex  pl-[112px] pt-[41.68px] gap-[82px] pr-[107px] ">
-                  <Image className="rounded-[23.79px]" src="/image 6.svg" alt="profile" width={506} height={669} />
+                  {productMedia.length > 0 && productMedia[0].type === "image" && (
+                    <Image
+                    className="rounded-[23.79px]"
+                    src={productMedia[0].url}
+                    alt={selectedProduct.name}
+                    width={506}
+                    height={669}
+                    />
+                )}
                   <div className="flex flex-col text-black">
-                      <h1 className="text-[55.78px] font-semibold">White Full Neck T-Shirt</h1>
-                      <p className="flex items-center gap-4 font-medium text-[47.59px]">Rs 599  <span className="text-[36.06px] text-gray-400 line-through">(Rs 799 M.R.P)</span></p>
+                      <h1 className="text-[55.78px] font-semibold">{selectedProduct.name}</h1>
+                      <p className="flex items-center gap-4 font-medium text-[47.59px]">Rs {selectedProduct.price}  <span className="text-[36.06px] text-gray-400 line-through">(Rs 799 M.R.P)</span></p>
                       <p className="text-gray-400 text-[27.21px] font-medium ">(incl. of all taxes)</p>
 
                       <div className="flex gap-[32px] ">
@@ -47,8 +70,7 @@ export default function FullProductPage(){
                       </div>
 
                       <h1 className="font-medium text-[34.21px]">Description</h1>
-                      <p className="font-normal text-[13.73px]">Sportswear is no longer under culture, it is no longer indie or cobbled together
-                         as it once was. Sport is fashion today. The top is oversized in fit and style, may need to size down.</p>
+                      <p className="font-normal text-[13.73px]">{selectedProduct.description || "No description available."}</p>
                        <Link className=" underline mt-4 text-[rgba(80,138,123,1)]" href="#">Read more</Link>
 
                        <button className="inline-flex self-start  items-center rounded-[7px]  mt-8 text-white bg-[rgba(66,48,41,1)] text-[34.21px] py-[20px] px-[28px] gap-[3.5px] ">

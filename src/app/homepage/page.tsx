@@ -3,19 +3,27 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "../Header";
 import Footer from "../footer";
+import { useParams } from "next/navigation";
 import ProtectedRoute from "../ProtectedRoute";
 import { useEffect } from "react";
 import { useProductStore, Product } from "../store/productStore";
 
 export default function HomePage() {
+  
+  const { id } = useParams();
+  const { products, selectedProduct, fetchAllProductMedia, productMedia, fetchProductById, loading, error, fetchProducts } = useProductStore();
 
-  const { products, loading, error, fetchProducts } = useProductStore();
+
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    const loadData = async () => {
+      await fetchProducts();
+      await fetchAllProductMedia();
+    };
+    loadData();
+  }, [fetchProducts, fetchAllProductMedia]);
 
-  // Filter products by category_id
+ 
   const justLaunched = products.filter((p: Product) => p.category_id === 3);
   const mensProducts = products.filter((p: Product) => p.category_id === 1);
   const womensProducts = products.filter((p: Product) => p.category_id === 2);
@@ -47,10 +55,19 @@ export default function HomePage() {
         </div>
              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
               {justLaunched.map((item: Product) => (
-                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+                <Link href={`/fullProduct/${item.id}`} key={item.id}>
+                <div className="bg-gray-50 shadow p-4 rounded-xl hover:shadow-lg transition cursor-pointer">
+                  <Image
+                      src={item.media?.[0]?.url || "/placeholder.png"}
+                      alt={item.name}
+                      width={200}
+                      height={250}
+                      className="rounded-lg object-cover mb-2"
+                    />
                   <p className="text-xl font-semibold text-black">{item.name}</p>
                   <p className="text-gray-600 text-lg">${item.price}</p>
                 </div>
+              </Link>
               ))}
             </div>
         </div>
@@ -61,11 +78,20 @@ export default function HomePage() {
             <button className="text-gray-600"> Show all</button>
         </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
-              {justLaunched.map((item: Product) => (
-                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+              {mensProducts.map((item: Product) => (
+                <Link href={`/fullProduct/${item.id}`} key={item.id}>
+                <div className="bg-gray-50 shadow p-4 rounded-xl hover:shadow-lg transition cursor-pointer">
+                  <Image
+                      src={item.media?.[0]?.url || "/placeholder.png"}
+                      alt={item.name}
+                      width={200}
+                      height={250}
+                      className="rounded-lg object-cover mb-2"
+                    />
                   <p className="text-xl font-semibold text-black">{item.name}</p>
                   <p className="text-gray-600 text-lg">${item.price}</p>
                 </div>
+              </Link>
               ))}
             </div>
         </div>
@@ -76,11 +102,20 @@ export default function HomePage() {
             <button className="text-gray-600"> Show all</button>
         </div>
              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-10">
-              {justLaunched.map((item: Product) => (
-                <div key={item.id} className="bg-gray-50 shadow p-4 rounded-xl">
+              {womensProducts.map((item: Product) => (
+                <Link href={`/fullProduct/${item.id}`} key={item.id}>
+                <div className="bg-gray-50 shadow p-4 rounded-xl hover:shadow-lg transition cursor-pointer">
+                  <Image
+                      src={item.media?.[0]?.url || "/placeholder.png"}
+                      alt={item.name}
+                      width={200}
+                      height={250}
+                      className="rounded-lg object-cover mb-2"
+                    />
                   <p className="text-xl font-semibold text-black">{item.name}</p>
                   <p className="text-gray-600 text-lg">${item.price}</p>
                 </div>
+              </Link>
               ))}
             </div>
           </div>
