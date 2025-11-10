@@ -72,18 +72,23 @@ login: async (email, password) => {
     const data = await res.json();
     console.log("Login response:", data);
 
-    if (!res.ok) {
-      const message = data.detail || "Invalid credentials";
+    if (!res.ok || !data.success) {
+      const message = data.detail || data.message || "Invalid credentials";
       set({ error: message, loading: false });
       return { success: false, message };
     }
 
     const token = data.data.access_token;
-    const user = data.data.user;
+    const userId = data.data.user.id;
+   // const userEmail = data.data.user.email;
  
-    setCookie("token", token, { days: 7 });
+    setCookie("token", token);
+    setCookie("userId", String(userId));
     set({ user: { email, token }, loading: false });
 
+    console.log("token",token);
+    console.log("token123",userId);
+  
     return { success: true };
   } catch (err: any) {
     set({ error: err.message, loading: false });
