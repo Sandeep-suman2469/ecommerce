@@ -1,12 +1,14 @@
 "use client"
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../Header";
 import Footer from "../footer";
 import { useCartStore } from "../store/cartStore";
 
 
 export default function CartItems(){
+
+  
 
     
     // const cartItems = [
@@ -17,17 +19,17 @@ export default function CartItems(){
     // ]
 
 
-//     const {
-//     cartItems,
-//     loading,
-//     selectedItems,
-//     fetchCart,
-//     updateQuantity,
-//     toggleSelect,
-//     subtotal,
-//   } = useCartStore();
+    const {
+    cartItems,
+    loading,
+    selectedItems,
+    fetchCart,
+    updateQuantity,
+    toggleSelect,
+    subtotal,
+  } = useCartStore();
 
-  // ✅ Fetch cart from backend when page loads
+
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
@@ -38,43 +40,8 @@ export default function CartItems(){
         Loading cart...
       </div>
     );
-  }
-
-    
-
-    
-     
-  const [quantities, setQuantities] = useState<Record<number, number>>(
-  cartItems.reduce((acc, item) => ({ ...acc, [item.id]: 1 }), {})
-);
-
-
-
-  const [selectedItems, setSelectedItems] = useState<Record<number, boolean>>(
-    cartItems.reduce((acc, item) => ({ ...acc, [item.id]: false }), {})
-  );
-
-  const updateQuantity = (id: number, amount: number) => {
-    setQuantities((prev) => ({
-        ...prev,
-        [id]: Math.max(1, prev[id] + amount),
-        }));
-    };
-
-  const toggleSelect = (id: number) => {
-    setSelectedItems((prev) => ({
-        ...prev,
-        [id]: !prev[id],
-    }));
-    };
-
-  
-  const subtotal = cartItems.reduce(
-    (sum, item) =>
-        selectedItems[item.id] ? sum + item.price * quantities[item.id] : sum,
-    0
-    );
-    
+  }  
+ 
     return(
         <>
         <Header/>
@@ -89,7 +56,7 @@ export default function CartItems(){
             { cartItems.map((items)=>(
                 <div key={items.id} className="flex items-center justify-between bg-white gap-[49.38px]  rounded-[75.29px] p-6  w-full  shadow-sm ">
                       <div className="md:h-[372.69] md:w-[368.35]">
-                            <Image src={items.image}  alt="Sportwear Set" width={97.85} height={99} className="rounded-xl object-cover" />
+                            <Image src={items.image}  alt="Sportwear Set" width={368.35} height={372.69} className="rounded-xl object-cover" />
                         </div>
 
                         <div className="flex flex-col justify-between">
@@ -117,7 +84,7 @@ export default function CartItems(){
                             >
                                 –
                             </button>
-                            <span className="text-gray-800 text-lg text-[45.17px] mx-[48.48px]">{quantities[items.id]}</span>
+                            <span className="text-gray-800 text-lg text-[45.17px] mx-[48.48px]">{items.quantity}</span>
                             <button
                                 onClick={() => updateQuantity(items.id, 1)}
                                 className="text-gray-600 text-[45.17px]"

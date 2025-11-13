@@ -82,8 +82,20 @@ login: async (email, password) => {
     const userId = data.data.user.id;
    // const userEmail = data.data.user.email;
  
-    setCookie("token", token);
-    setCookie("userId", String(userId));
+    
+    // setCookie("token", token, { days: 1, path: "/" });
+    // console.log(" Token after re-set:", getCookie("token"));
+
+    removeCookie("token");
+    console.log("After removeCookie:", getCookie("token"));
+   
+    setCookie("token", token, { days: 1, path: "/" });
+    setCookie("userId", String(userId), { days: 1, path: "/" });
+
+
+    console.log(" New token set:", getCookie("token"));
+
+
     set({ user: { email, token }, loading: false });
 
     console.log("token",token);
@@ -186,6 +198,7 @@ login: async (email, password) => {
 
   logout: () => {
     removeCookie("token");
+    removeCookie("userId");
     set({ user: null });
   },
 

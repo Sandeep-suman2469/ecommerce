@@ -3,11 +3,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import {FaUser, FaShoppingBag, FaCog, FaEnvelope, FaSignOutAlt} from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "./store/authStore";
+
+
+
 
 export default function Header(){
 
     const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
     const [isOpen , setIsOpen] = useState<boolean>(false);
+
+    const { logout } = useAuthStore();
+    const router = useRouter();
+
+    const handleLogout = () => {
+    logout();
+    router.push("/login"); 
+    };
 
     const  toggleSearchBar = (): void => {
         setShowSearchBar((prev) => !prev);
@@ -45,7 +58,9 @@ export default function Header(){
                        <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                            <FaCog /> settings
                        </li>
-                       <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                       <li 
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
                            <FaSignOutAlt /> Logout
                        </li>
 
