@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { getCookie } from "react-use-cookie";
+import { useProductStore } from "./productStore";
 
 interface CartItem {
   id: number; // cart ID
@@ -16,54 +18,133 @@ interface CartState {
   loading: boolean;
   selectedItems: Record<number, boolean>;
   fetchCart: () => Promise<void>;
+  addToCart: (product: any) => Promise<void>;
   updateQuantity: (id: number, amount: number) => Promise<void>;
   toggleSelect: (id: number) => void;
   subtotal: number;
 }
+
+
 
 export const useCartStore = create<CartState>((set, get) => ({
   cartItems: [],
   loading: false,
   selectedItems: {},
 
-  // ✅ Fetch cart items from backend
-  fetchCart: async () => {
-    set({ loading: true });
-    try {
-      const res = await fetch("http://localhost:8000/api/cart");
-      const data = await res.json();
+ fetchCart: async () => {
+  set({ loading: true });
+  try {
+    const token = getCookie("token");
+    console.log("Token before fetch:", token);
 
-      const mappedData = data.map((item: any) => ({
+    if (!token) {
+      throw new Error("No token found. Please log in again.");
+    }
+
+
+    const {  fetchProducts, fetchAllProductMedia } = useProductStore.getState();
+
+    let { products } = useProductStore.getState();
+
+    if (!products || products.length === 0) {
+      await fetchProducts();
+      await fetchAllProductMedia();
+      products = useProductStore.getState().products;
+    }else {
+ 
+      await fetchAllProductMedia();
+      products = useProductStore.getState().products;
+    }
+    
+    const res = await fetch("http://localhost:8000/api/cart/list", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Cart API response:", data);
+
+    const items = Array.isArray(data) ? data : [];
+
+    const mappedData = items.map((item: any) => {
+      const product = products.find((p: any) => p.id === item.product_id);
+
+      const imageUrl =
+          product?.media && product.media.length > 0
+            ? product.media[0].url
+            : "/placeholder.svg";
+      
+      
+      return {
         id: item.id,
         product_id: item.product_id,
-        name: item.name || "Unnamed Product",
-        price: item.price || 0,
+        name: product?.name || "Unnamed Product",
+        price: product?.price || 0,
         size: item.size || "M",
         color: item.color || "N/A",
-        image: item.image || "/placeholder.svg",
+        image: imageUrl,
         quantity: item.product_quantity || 1,
-      }));
+      };
+    });
+    
 
-      const initialSelection = mappedData.reduce(
-        (acc: Record<number, boolean>, item: any) => {
-          acc[item.id] = false;
-          return acc;
-        },
-        {}
-      );
 
-      set({
-        cartItems: mappedData,
-        selectedItems: initialSelection,
-        loading: false,
+    const initialSelection = mappedData.reduce(
+      (acc: Record<number, boolean>, item: any) => {
+        acc[item.id] = false;
+        return acc;
+      },
+      {}
+    );
+
+    set({
+      cartItems: mappedData,
+      selectedItems: initialSelection,
+      loading: false,
+    });
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+    set({ loading: false });
+  }
+},
+
+
+  addToCart: async (product: any) => {
+    set({ loading: true });
+    try {
+      const token = getCookie("token");
+      const res = await fetch("http://localhost:8000/api/cart/add", {
+        method: "POST",
+        headers: {
+           "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+           },
+        body: JSON.stringify({
+          product_id: product.id,
+          product_quantity: 1,
+          size: product.size || "M",
+          color: product.color || "Default",
+        }),
       });
+
+      if (!res.ok) throw new Error("Failed to add to cart");
+
+     
+      await get().fetchCart();
     } catch (err) {
-      console.error("Error fetching cart:", err);
+      console.error("Error adding to cart:", err);
+    } finally {
       set({ loading: false });
     }
   },
 
-  // ✅ Update quantity in both backend and store
+  
   updateQuantity: async (id: number, amount: number) => {
     const currentItems = get().cartItems;
     const target = currentItems.find((item) => item.id === id);
@@ -71,9 +152,11 @@ export const useCartStore = create<CartState>((set, get) => ({
 
     const newQuantity = Math.max(1, target.quantity + amount);
 
-    // Update backend
+    
     try {
-      await fetch(`http://localhost:8000/api/cart/${id}`, {
+      const token = getCookie("token");
+
+      await fetch(`http://localhost:8000/api/cart/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ product_quantity: newQuantity }),
@@ -82,7 +165,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       console.error("Error updating quantity:", err);
     }
 
-    // Update local state
+   
     const updatedItems = currentItems.map((item) =>
       item.id === id ? { ...item, quantity: newQuantity } : item
     );
@@ -90,7 +173,37 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cartItems: updatedItems });
   },
 
-  // ✅ Toggle selected items
+  removeFromCart: async (id: number) => {
+  try {
+    const token = getCookie("token");
+    if (!token) throw new Error("No token found. Please log in again.");
+
+    console.log("Deleting cart item:", id); 
+
+    const res = await fetch(`http://localhost:8000/api/cart/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Optional if your API needs auth
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to delete cart item. Status: ${res.status}`);
+    }
+
+    // ✅ Update local state immediately
+    const updatedCart = get().cartItems.filter((item) => item.id !== id);
+    set({ cartItems: updatedCart });
+
+    console.log("Cart item deleted successfully:", id);
+  } catch (err) {
+    console.error("Error deleting cart item:", err);
+  }
+},
+
+
+ 
   toggleSelect: (id: number) => {
     const prev = get().selectedItems;
     set({
@@ -98,7 +211,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     });
   },
 
-  // ✅ Subtotal (computed dynamically)
+ 
   get subtotal() {
     const { cartItems, selectedItems } = get();
     return cartItems.reduce(

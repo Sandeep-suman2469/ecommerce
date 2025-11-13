@@ -4,19 +4,21 @@ import Header from "@/app/Header";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useProductStore } from "@/app/store/productStore";
+import { useCartStore } from "@/app/store/cartStore";
 import { useEffect } from "react";
 
 export default function FullProductPage(){
 
     const { id } = useParams();
-    const { selectedProduct, productMedia, fetchProductById, loading, error } = useProductStore();
+    const { selectedProduct, productMedia, fetchProductById, loading: productLoading, error } = useProductStore();
+    const { addToCart, loading: cartLoading } = useCartStore();
 
 
     useEffect(() => {
     if (id) fetchProductById(Number(id));
   }, [id, fetchProductById]);
 
-  if (loading) return <p className="text-center mt-10 text-gray-600">Loading...</p>;
+  if (productLoading) return <p className="text-center mt-10 text-gray-600">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
   if (!selectedProduct) return <p className="text-center mt-10 text-gray-600">Product not found.</p>;
 
@@ -73,7 +75,10 @@ export default function FullProductPage(){
                       <p className="font-normal text-[13.73px]">{selectedProduct.description || "No description available."}</p>
                        <Link className=" underline mt-4 text-[rgba(80,138,123,1)]" href="#">Read more</Link>
 
-                       <button className="inline-flex self-start  items-center rounded-[7px]  mt-8 text-white bg-[rgba(66,48,41,1)] text-[34.21px] py-[20px] px-[28px] gap-[3.5px] ">
+                       <button 
+                        disabled={cartLoading}
+                        onClick={() => addToCart(selectedProduct)}
+                        className="inline-flex self-start  items-center rounded-[7px]  mt-8 text-white bg-[rgba(66,48,41,1)] text-[34.21px] py-[20px] px-[28px] gap-[3.5px] ">
                         <Image className="" src="/Filled.svg" alt="profile" width={35.91} height={27.5} /> Add to Cart</button>
                   </div>
             </div>
